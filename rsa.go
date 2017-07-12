@@ -14,7 +14,21 @@ var (
 	PUBLICKEY  []byte
 )
 
-func GenerateKey(bits int) {
+type EncryptionMethodRSA struct{}
+
+func (e *EncryptionMethodRSA) GenerateKey(bits int) {
+	generateKey(bits)
+}
+
+func (e *EncryptionMethodRSA) Encrypt(origData []byte) ([]byte, error) {
+	return rsaEncrypt(origData)
+}
+
+func (e *EncryptionMethodRSA) Decrypt(ciphertext []byte) ([]byte, error) {
+	return rsaDecrypt(ciphertext)
+}
+
+func generateKey(bits int) {
 	// 生成私钥文件
 	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
 	if err != nil {
@@ -45,7 +59,7 @@ func GenerateKey(bits int) {
 }
 
 // 加密
-func RsaEncrypt(origData []byte) ([]byte, error) {
+func rsaEncrypt(origData []byte) ([]byte, error) {
 	block, _ := pem.Decode(PUBLICKEY) //将密钥解析成公钥实例
 	if block == nil {
 		return nil, errors.New("public key error")
@@ -59,7 +73,7 @@ func RsaEncrypt(origData []byte) ([]byte, error) {
 }
 
 // 解密
-func RsaDecrypt(ciphertext []byte) ([]byte, error) {
+func rsaDecrypt(ciphertext []byte) ([]byte, error) {
 	block, _ := pem.Decode(PRIVATEKEY) //将密钥解析成私钥实例
 	if block == nil {
 		return nil, errors.New("private key error!")

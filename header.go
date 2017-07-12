@@ -33,8 +33,11 @@ type Header struct {
 	X5t string           `json:"x5t,omitempty"`
 }
 
-func NewHeader() Header {
-	return Header{}
+func NewHeader(alg Algorithm, enc EncryptionMethod) Header {
+	header := Header{}
+	header.Alg = alg
+	header.Enc = enc
+	return header
 }
 
 func (h *Header) SetHeader(alg Algorithm, enc EncryptionMethod) {

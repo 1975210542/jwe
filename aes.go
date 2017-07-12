@@ -7,12 +7,26 @@ import (
 	"fmt"
 )
 
-func Encrypt(plantText, key []byte) ([]byte, error) {
+type EncryptionMethodAES struct{}
+
+func (e *EncryptionMethodAES) Encrypt(plantText, key []byte) ([]byte, error) {
+	return aesEncrypt(plantText, key)
+}
+
+func (e *EncryptionMethodAES) Decrypt(ciphertext, key []byte) ([]byte, error) {
+	return aesDecrypt(ciphertext, key)
+}
+
+func (e *EncryptionMethodAES) GetKey(size int) []byte {
+	return getAesKey(size)
+}
+
+func aesEncrypt(plantText, key []byte) ([]byte, error) {
 	block, err := aes.NewCipher(key) //选择加密算法
 	if err != nil {
 		return nil, err
 	}
-	plantText = PKCS7Padding(plantText, block.BlockSize())
+	plantText = pKCS7Padding(plantText, block.BlockSize())
 
 	blockModel := cipher.NewCBCEncrypter(block, key)
 
@@ -22,18 +36,18 @@ func Encrypt(plantText, key []byte) ([]byte, error) {
 	return ciphertext, nil
 }
 
-func PKCS7Padding(ciphertext []byte, blockSize int) []byte {
+func pKCS7Padding(ciphertext []byte, blockSize int) []byte {
 	padding := blockSize - len(ciphertext)%blockSize
 	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
 	return append(ciphertext, padtext...)
 }
-func getKey() []byte {
-	key := GenerateEncryptedKey(16)
+func getAesKey(size int) []byte {
+	key := GenerateRandString(size)
 	return key
 }
 
 //解密
-func Decrypt(ciphertext, key []byte) ([]byte, error) {
+func aesDecrypt(ciphertext, key []byte) ([]byte, error) {
 	//	keyBytes := []byte(key)
 	keyBytes := key
 	fmt.Println("keyBytes:", keyBytes)
@@ -44,11 +58,11 @@ func Decrypt(ciphertext, key []byte) ([]byte, error) {
 	blockModel := cipher.NewCBCDecrypter(block, key)
 	plantText := make([]byte, len(ciphertext))
 	blockModel.CryptBlocks(plantText, ciphertext)
-	plantText = PKCS7UnPadding(plantText, block.BlockSize())
+	plantText = pKCS7UnPadding(plantText, block.BlockSize())
 	return plantText, nil
 }
 
-func PKCS7UnPadding(plantText []byte, blockSize int) []byte {
+func pKCS7UnPadding(plantText []byte, blockSize int) []byte {
 	length := len(plantText)
 	unpadding := int(plantText[length-1])
 	return plantText[:(length - unpadding)]
