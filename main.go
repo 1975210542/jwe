@@ -5,18 +5,33 @@ import ( //	"crypto/rand"
 	//	"crypto/x509"
 	//	"encoding/pem"
 	"fmt"
+	"io/ioutil"
+	//	"os"
 
 	//	"encoding/base64"
 	//	"strings"
 	//	"log"
 )
 
-/*eyJhbGciOiJSU0ExXzUiLCJlbmMiOiJBMTI4Q0JDLUhTMjU2In0
-.ep97JdQldzCVdGxSB_r4GynGrH2t8Au_T0LhpHQlZIn_SXVL6MyrJdKsTnFwzS-TZlrne94ZwlQeiwWrdJfu5QicRavQ-pgGDBe5vadfaLgYuAHqI70hY8AdY5n2TVOU7Q-ZLqO41xOv40JV0h-pZxe0fysWcNCD4D9SMXgZx3U
-.enZrNnRpemgyaW9rYTFxbg
-.2ypqAprYGAaSf7T-pHRfUg
-.ODE2OTVmNjZhZmU1OTA4NWI2MDc5MDgzNTkxNTZiNmE1YmFhNTZmYjljNmUyYmUwNmE4ZTJiNTFlZWU3ZGIzZQ*/
 func main() {
+	key := GenerateRandString(16)
+	plant := "gaoqiankun"
+	cipher, err := hmacEncrpt([]byte(plant), key)
+	fmt.Println("cipher:", string(cipher), err)
+}
+
+func testrsa() {
+	publicKey, _ := ioutil.ReadFile("test/publicKey.pem")
+	fmt.Println("publicKey:", string(publicKey))
+	plant := "gaoqinakun"
+	cipher, err := rsaEncrypt([]byte(plant), string(publicKey))
+	fmt.Println("cipher:", string(cipher), err)
+
+	privateKey, _ := ioutil.ReadFile("test/privateKey.pem")
+	clear, err := rsaDecrypt(cipher, string(privateKey))
+	fmt.Println("clear:", string(clear), err)
+}
+func TestJwe() {
 	args := make([]string, 0)
 	jwe := Jwe{}
 	//1 生成头部

@@ -50,5 +50,6 @@ func hmacEncrpt(plantText []byte, key interface{}) ([]byte, error) {
 }
 
 func hmacDecrpt(cipherText []byte, key interface{}) ([]byte, error) {
+
 	return []byte{}, errors.New("AAAAA")
 }

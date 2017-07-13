@@ -8,11 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-)
-
-var (
-	PRIVATEKEY []byte
-	PUBLICKEY  []byte
+	"os"
 )
 
 type EncryptionMethodRSA struct {
@@ -41,13 +37,11 @@ func (e *EncryptionMethodRSA) GenerateKey(bits int) {
 
 func (e *EncryptionMethodRSA) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
 	fmt.Println("RSA jiami")
-	key = PUBLICKEY
 	return rsaEncrypt(plantText, key)
 }
 
 func (e *EncryptionMethodRSA) Decrypt(cipherText []byte, key interface{}) ([]byte, error) {
 	fmt.Println("RSA jiemi")
-	key = PRIVATEKEY
 	return rsaDecrypt(cipherText, key)
 }
 
@@ -63,7 +57,14 @@ func generateKey(size int) {
 		Bytes: derStream,
 	}
 
-	PRIVATEKEY = pem.EncodeToMemory(block)
+	file, err := os.Create("test/privateKey.pem")
+	if err != nil {
+		fmt.Println("Failed to Create privateKey's file!!! ", err)
+	}
+	err = pem.Encode(file, block)
+	if err != nil {
+		fmt.Println("Failed to Encode private key!!!", err)
+	}
 
 	// 生成公钥文件
 	publicKey := &privateKey.PublicKey
@@ -76,7 +77,15 @@ func generateKey(size int) {
 		Bytes: derPkix,
 	}
 
-	PUBLICKEY = pem.EncodeToMemory(block)
+	file, err = os.Create("test/publicKey.pem")
+	if err != nil {
+		fmt.Println("Failed to create publicKey's file")
+	}
+
+	err = pem.Encode(file, block)
+	if err != nil {
+		fmt.Println("Failed to Encode public key!!!")
+	}
 
 }
 
