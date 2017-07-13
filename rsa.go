@@ -6,6 +6,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"log"
 )
 
@@ -14,23 +15,45 @@ var (
 	PUBLICKEY  []byte
 )
 
-type EncryptionMethodRSA struct{}
+type EncryptionMethodRSA struct {
+	Name string
+}
 
+var (
+	EncryptionMethodRSA256 *EncryptionMethodRSA
+)
+
+func init() {
+	// RS256
+	EncryptionMethodRSA256 = &EncryptionMethodRSA{"RSA1_5"}
+	RegisterSigningMethod(EncryptionMethodRSA256.GetName(), func() EncryptionMethod {
+		return EncryptionMethodRSA256
+	})
+
+}
+
+func (e *EncryptionMethodRSA) GetName() string {
+	return e.Name
+}
 func (e *EncryptionMethodRSA) GenerateKey(bits int) {
 	generateKey(bits)
 }
 
-func (e *EncryptionMethodRSA) Encrypt(origData []byte) ([]byte, error) {
-	return rsaEncrypt(origData)
+func (e *EncryptionMethodRSA) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
+	fmt.Println("RSA jiami")
+	key = PUBLICKEY
+	return rsaEncrypt(plantText, key)
 }
 
-func (e *EncryptionMethodRSA) Decrypt(ciphertext []byte) ([]byte, error) {
-	return rsaDecrypt(ciphertext)
+func (e *EncryptionMethodRSA) Decrypt(cipherText []byte, key interface{}) ([]byte, error) {
+	fmt.Println("RSA jiemi")
+	key = PRIVATEKEY
+	return rsaDecrypt(cipherText, key)
 }
 
-func generateKey(bits int) {
+func generateKey(size int) {
 	// 生成私钥文件
-	privateKey, err := rsa.GenerateKey(rand.Reader, bits)
+	privateKey, err := rsa.GenerateKey(rand.Reader, size)
 	if err != nil {
 		log.Println(err)
 	}
@@ -54,13 +77,14 @@ func generateKey(bits int) {
 	}
 
 	PUBLICKEY = pem.EncodeToMemory(block)
-	//	log.Println(string(PRIVATEKEY))
-	//	log.Println(string(PUBLICKEY))
+
 }
 
 // 加密
-func rsaEncrypt(origData []byte) ([]byte, error) {
-	block, _ := pem.Decode(PUBLICKEY) //将密钥解析成公钥实例
+func rsaEncrypt(origData []byte, key interface{}) ([]byte, error) {
+	fmt.Println("RSA 第二次调用")
+	publicKey := key.([]byte)
+	block, _ := pem.Decode(publicKey) //将密钥解析成公钥实例
 	if block == nil {
 		return nil, errors.New("public key error")
 	}
@@ -69,12 +93,13 @@ func rsaEncrypt(origData []byte) ([]byte, error) {
 		return nil, err
 	}
 	pub := pubInterface.(*rsa.PublicKey)
-	return rsa.EncryptPKCS1v15(rand.Reader, pub, origData) //RSA算法加密
+	return rsa.EncryptPKCS1v15(rand.Reader, pub, []byte(origData)) //RSA算法加密
 }
 
 // 解密
-func rsaDecrypt(ciphertext []byte) ([]byte, error) {
-	block, _ := pem.Decode(PRIVATEKEY) //将密钥解析成私钥实例
+func rsaDecrypt(ciphertext []byte, key interface{}) ([]byte, error) {
+	privateKey := key.([]byte)
+	block, _ := pem.Decode(privateKey) //将密钥解析成私钥实例
 	if block == nil {
 		return nil, errors.New("private key error!")
 	}
@@ -82,5 +107,5 @@ func rsaDecrypt(ciphertext []byte) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	return rsa.DecryptPKCS1v15(rand.Reader, priv, ciphertext) //RSA算法解密
+	return rsa.DecryptPKCS1v15(rand.Reader, priv, []byte(ciphertext)) //RSA算法解密
 }
