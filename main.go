@@ -4,22 +4,47 @@ import ( //	"crypto/rand"
 	//	"crypto/rsa"
 	//	"crypto/x509"
 	//	"encoding/pem"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"io/ioutil"
 	//	"os"
 
 	//	"encoding/base64"
-	//	"strings"
+	"strings"
 	//	"log"
 )
 
 func main() {
 	key := GenerateRandString(16)
-	plant := "gaoqiankun"
-	cipher, err := hmacEncrpt([]byte(plant), key)
-	fmt.Println("cipher:", string(cipher), err)
+	fmt.Println("key:", string(key))
+	method := GetSigningMethod("A128CBC-HS25")
+	jwtToken := NewWithClaims(method)
+	fmt.Println("jwtToken:", *jwtToken)
+
+	str, err := jwtToken.SignedToken(key)
+	if err == nil {
+		fmt.Println("jwt:", str)
+	}
+	fmt.Println("************************************")
+	parts := strings.Split(str, ".")
+	fmt.Println("parts:", parts)
+	claims, err := Base64Decode(parts[0])
+	if err == nil {
+		fmt.Println("calims:", string(claims))
+	}
 }
 
+//验证hmac
+
+func Verify(MessageHMAC, message string, key interface{}) bool {
+	messageHMAC, _ := hex.DecodeString(MessageHMAC)
+	mac := hmac.New(sha256.New, key.([]byte))
+	mac.Write([]byte(message))
+	exmac := mac.Sum(nil)
+	return hmac.Equal(messageHMAC, exmac)
+}
 func testrsa() {
 	publicKey, _ := ioutil.ReadFile("test/publicKey.pem")
 	fmt.Println("publicKey:", string(publicKey))

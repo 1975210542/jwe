@@ -5,7 +5,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
-	//	"fmt"
+	"fmt"
 )
 
 type EncryptionMethodHMAC struct {
@@ -18,7 +18,7 @@ var (
 
 func init() {
 	// RS256
-	EncryptionMethodHMAC256 = &EncryptionMethodHMAC{"A128CBC-HS256"}
+	EncryptionMethodHMAC256 = &EncryptionMethodHMAC{"A128CBC-HS25"}
 	RegisterSigningMethod(EncryptionMethodHMAC256.GetName(), func() EncryptionMethod {
 		return EncryptionMethodHMAC256
 	})
@@ -30,11 +30,22 @@ func (e *EncryptionMethodHMAC) GetName() string {
 }
 
 func (e *EncryptionMethodHMAC) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
+	fmt.Println("HMAC,加密方法")
 	return hmacEncrpt(plantText, key)
 }
 
 func (e *EncryptionMethodHMAC) Decrypt(cipherText []byte, key interface{}) ([]byte, error) {
+	fmt.Println("HMAC,验证")
 	return hmacDecrpt(cipherText, key)
+}
+
+func (e *EncryptionMethodHMAC) Verify(MessageHMAC, message string, key interface{}) bool {
+	fmt.Println("HMAC验证！！！")
+	messageHMAC, _ := hex.DecodeString(MessageHMAC)
+	mac := hmac.New(sha256.New, key.([]byte))
+	mac.Write([]byte(message))
+	exmac := mac.Sum(nil)
+	return hmac.Equal(messageHMAC, exmac)
 }
 
 /**********************************************************************/
