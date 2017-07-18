@@ -9,6 +9,7 @@ import ( //	"crypto/rand"
 	"encoding/hex"
 	"fmt"
 	"io/ioutil"
+	"time"
 	//	"os"
 
 	//	"encoding/base64"
@@ -17,10 +18,28 @@ import ( //	"crypto/rand"
 )
 
 func main() {
+	//	sc := StandarClaims{}
+	//	sc.ExpiresAt = time.Now().Unix()
+	ti := 1500370398
+	//	sc.IssueAt = time.Now().Unix()
+
+	//	fmt.Println(sc.VerifyIat(int64(ti), false))
+	mc := MapClaims{}
+	mc["exp"] = time.Now().Unix()
+	fmt.Println(mc.VerifyExp(int64(ti), false))
+
+}
+
+func testJwt() {
 	key := GenerateRandString(16)
 	fmt.Println("key:", string(key))
 	method := GetSigningMethod("A128CBC-HS25")
-	jwtToken := NewWithClaims(method)
+	mapClaims := MapClaims{}
+	mapClaims["username"] = "gaoqiankun"
+	mapClaims["age"] = "18"
+
+	jwtToken := NewWithClaims(method, mapClaims)
+
 	fmt.Println("jwtToken:", *jwtToken)
 
 	str, err := jwtToken.SignedToken(key)
@@ -30,7 +49,7 @@ func main() {
 	fmt.Println("************************************")
 	parts := strings.Split(str, ".")
 	fmt.Println("parts:", parts)
-	claims, err := Base64Decode(parts[0])
+	claims, err := Base64Decode(parts[1])
 	if err == nil {
 		fmt.Println("calims:", string(claims))
 	}

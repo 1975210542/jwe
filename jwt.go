@@ -12,8 +12,8 @@ type JwtToken struct {
 	Method EncryptionMethod
 }
 
-func NewWithClaims(method EncryptionMethod) *JwtToken {
-	return newWithClaims(method, MapClaims{"username": "gaoqiankun"})
+func NewWithClaims(method EncryptionMethod, claims Claims) *JwtToken {
+	return newWithClaims(method, claims)
 }
 
 func newWithClaims(method EncryptionMethod, claims Claims) *JwtToken {

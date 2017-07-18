@@ -7,6 +7,7 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"os"
 )
@@ -31,9 +32,6 @@ func init() {
 func (e *EncryptionMethodRSA) GetName() string {
 	return e.Name
 }
-func (e *EncryptionMethodRSA) GenerateKey(bits int) {
-	generateKey(bits)
-}
 
 func (e *EncryptionMethodRSA) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
 	fmt.Println("RSA jiami")
@@ -43,6 +41,29 @@ func (e *EncryptionMethodRSA) Encrypt(plantText []byte, key interface{}) ([]byte
 func (e *EncryptionMethodRSA) Decrypt(cipherText []byte, key interface{}) ([]byte, error) {
 	fmt.Println("RSA jiemi")
 	return rsaDecrypt(cipherText, key)
+}
+
+//生成密钥对
+func (e *EncryptionMethodRSA) GenerateKey(bits int) {
+	generateKey(bits)
+}
+
+//private publicKey
+func (e *EncryptionMethodRSA) GetPublicKey() (publicKey []byte, err error) {
+
+	if publicKey, err = ioutil.ReadFile("test/publicKey.pem"); err != nil {
+		return []byte{}, err
+	}
+	return publicKey, nil
+}
+
+//get privateKey
+func (e *EncryptionMethodRSA) GetPrivateKey() (privateKey []byte, err error) {
+
+	if privateKey, err = ioutil.ReadFile("test/privateKey.pem"); err != nil {
+		return []byte{}, err
+	}
+	return privateKey, nil
 }
 
 func generateKey(size int) {
