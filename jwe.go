@@ -1,6 +1,7 @@
 package main
 
 import (
+	"jwe/utils"
 	"log"
 	"strings"
 )
@@ -14,6 +15,7 @@ func (j *Jwe) GetEncryptedKey(header Header, size int, key interface{}) (aesKey,
 func (j *Jwe) GetCipherText(header Header, plant []byte, key interface{}) (ciphertext, IV []byte) {
 	return getCipherText(header, plant, key)
 }
+
 func (j *Jwe) GetAuthenticationTag(header Header, args []string, key interface{}) (Atag []byte) {
 	return getAuthenticationTag(header, args, key)
 }
@@ -27,7 +29,7 @@ func getEncryptedKey(header Header, size int, key interface{}) (aeskey, RsaKey [
 	key = key.([]byte)
 	alg := header.Alg
 	method := GetSigningMethod(alg)
-	aesKey := GenerateRandString(size)
+	aesKey := utils.GenerateRandString(size)
 
 	RsaKey, err := method.Encrypt(aesKey, key)
 	if err != nil {

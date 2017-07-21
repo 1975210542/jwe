@@ -49,6 +49,7 @@ func (e *EncryptionMethodHMAC) Verify(MessageHMAC, message string, key interface
 }
 
 /**********************************************************************/
+
 func hmacEncrpt(plantText []byte, key interface{}) ([]byte, error) {
 
 	if keyBytes, ok := key.([]byte); ok {

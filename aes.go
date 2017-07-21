@@ -4,7 +4,8 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
-	"fmt"
+	"jwe/utils"
+	//	"fmt"
 )
 
 type EncryptionMethodAES struct {
@@ -29,12 +30,12 @@ func (e *EncryptionMethodAES) GetName() string {
 }
 
 func (e *EncryptionMethodAES) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
-	fmt.Println("AES 加密！！！")
+	//	fmt.Println("AES 加密！！！")
 	return aesEncrypt(plantText, key)
 }
 
 func (e *EncryptionMethodAES) Decrypt(cipherText []byte, key interface{}) ([]byte, error) {
-	fmt.Println("AES 解密！！！")
+	//	fmt.Println("AES 解密！！！")
 	return aesDecrypt(cipherText, key)
 }
 
@@ -44,7 +45,7 @@ func (e *EncryptionMethodAES) GetKey(size int) []byte {
 
 /*****************************************/
 func aesEncrypt(plantText []byte, key interface{}) ([]byte, error) {
-	fmt.Println("AES 第二次调用")
+	//	fmt.Println("AES 第二次调用")
 	keyBytes := key.([]byte)
 	block, err := aes.NewCipher(keyBytes) //选择加密算法
 	if err != nil {
@@ -67,7 +68,7 @@ func pKCS7Padding(ciphertext []byte, blockSize int) []byte {
 }
 
 func getAesKey(size int) []byte {
-	key := GenerateRandString(size)
+	key := utils.GenerateRandString(size)
 	return key
 }
 
@@ -75,12 +76,14 @@ func getAesKey(size int) []byte {
 func aesDecrypt(ciphertext []byte, key interface{}) ([]byte, error) {
 	//	keyBytes := []byte(key)
 	keyBytes := key.([]byte)
-	fmt.Println("keyBytes:", keyBytes)
+	//	fmt.Println("keyBytes:", keyBytes)
 	block, err := aes.NewCipher(keyBytes) //选择加密算法
 	if err != nil {
 		return nil, err
 	}
-	blockModel := cipher.NewCBCDecrypter(block, keyBytes)
+	blockSize := block.BlockSize()
+
+	blockModel := cipher.NewCBCDecrypter(block, keyBytes[:blockSize])
 	plantText := make([]byte, len(ciphertext))
 	blockModel.CryptBlocks(plantText, ciphertext)
 	plantText = pKCS7UnPadding(plantText, block.BlockSize())

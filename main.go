@@ -9,29 +9,21 @@ import ( //	"crypto/rand"
 	"encoding/hex"
 	"fmt"
 	"io/ioutil"
-	"time"
+	//	"time"
 	//	"os"
 
 	//	"encoding/base64"
 	"strings"
 	//	"log"
+	"jwe/utils"
 )
 
 func main() {
-	//	sc := StandarClaims{}
-	//	sc.ExpiresAt = time.Now().Unix()
-	ti := 1500370398
-	//	sc.IssueAt = time.Now().Unix()
-
-	//	fmt.Println(sc.VerifyIat(int64(ti), false))
-	mc := MapClaims{}
-	mc["exp"] = time.Now().Unix()
-	fmt.Println(mc.VerifyExp(int64(ti), false))
 
 }
 
 func testJwt() {
-	key := GenerateRandString(16)
+	key := utils.GenerateRandString(16)
 	fmt.Println("key:", string(key))
 	method := GetSigningMethod("A128CBC-HS25")
 	mapClaims := MapClaims{}

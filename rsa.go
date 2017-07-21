@@ -34,12 +34,12 @@ func (e *EncryptionMethodRSA) GetName() string {
 }
 
 func (e *EncryptionMethodRSA) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
-	fmt.Println("RSA jiami")
+	//	fmt.Println("RSA jiami")
 	return rsaEncrypt(plantText, key)
 }
 
 func (e *EncryptionMethodRSA) Decrypt(cipherText []byte, key interface{}) ([]byte, error) {
-	fmt.Println("RSA jiemi")
+	//	fmt.Println("RSA jiemi")
 	return rsaDecrypt(cipherText, key)
 }
 
@@ -112,7 +112,7 @@ func generateKey(size int) {
 
 // 加密
 func rsaEncrypt(origData []byte, key interface{}) ([]byte, error) {
-	fmt.Println("RSA 第二次调用")
+	//	fmt.Println("RSA 第二次调用")
 	publicKey := key.([]byte)
 	block, _ := pem.Decode(publicKey) //将密钥解析成公钥实例
 	if block == nil {
