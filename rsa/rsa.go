@@ -1,4 +1,4 @@
-package main
+package rsa
 
 import (
 	"crypto/rand"
@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"jwe/methodit"
 	"log"
 	"os"
 )
@@ -23,7 +24,7 @@ var (
 func init() {
 	// RS256
 	EncryptionMethodRSA256 = &EncryptionMethodRSA{"RSA1_5"}
-	RegisterSigningMethod(EncryptionMethodRSA256.GetName(), func() EncryptionMethod {
+	methodit.RegisterSigningMethod(EncryptionMethodRSA256.GetName(), func() methodit.EncryptionMethod {
 		return EncryptionMethodRSA256
 	})
 

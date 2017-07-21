@@ -1,6 +1,7 @@
 package main
 
 import (
+	"jwe/methodit"
 	"jwe/utils"
 	"log"
 	"strings"
@@ -28,7 +29,7 @@ func getEncryptedKey(header Header, size int, key interface{}) (aeskey, RsaKey [
 
 	key = key.([]byte)
 	alg := header.Alg
-	method := GetSigningMethod(alg)
+	method := methodit.GetSigningMethod(alg)
 	aesKey := utils.GenerateRandString(size)
 
 	RsaKey, err := method.Encrypt(aesKey, key)
@@ -44,7 +45,7 @@ func getCipherText(header Header, plant []byte, key interface{}) (ciphertext, IV
 	Key := key.([]byte)
 	IV = []byte(Key)
 	alg := header.Enc
-	method := GetSigningMethod(alg)
+	method := methodit.GetSigningMethod(alg)
 	ciphertext, err := method.Encrypt(plant, Key)
 	if err != nil {
 		log.Println("加密出错了", err)
@@ -56,7 +57,7 @@ func getAuthenticationTag(header Header, args []string, key interface{}) (Atag [
 
 	alg := header.Enc
 	tag := strings.Join(args, ".")
-	method := GetSigningMethod(alg)
+	method := methodit.GetSigningMethod(alg)
 	Atag, err := method.Encrypt([]byte(tag), key)
 	if err != nil {
 		log.Println("加密出错了", err)
@@ -67,7 +68,7 @@ func getJWE(args []string) string {
 	//	step 6. 拼接以及序列号数据，得到JWE Object 把以上5个步骤的数据进行Base64UrlEncode，然后按照顺序拼接，用"."分割，得到最后的数据。
 	var arg []string
 	for _, iterm := range args {
-		arg = append(arg, Base64Encode(iterm))
+		arg = append(arg, utils.Base64Encode(iterm))
 		log.Println("iterm:", iterm)
 	}
 	return strings.Join(arg, ".")

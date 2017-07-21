@@ -13,38 +13,14 @@ import ( //	"crypto/rand"
 	//	"os"
 
 	//	"encoding/base64"
-	"strings"
+	//	"strings"
 	//	"log"
+	"jwe/rsa"
 	"jwe/utils"
 )
 
 func main() {
-
-}
-
-func testJwt() {
-	key := utils.GenerateRandString(16)
-	fmt.Println("key:", string(key))
-	method := GetSigningMethod("A128CBC-HS25")
-	mapClaims := MapClaims{}
-	mapClaims["username"] = "gaoqiankun"
-	mapClaims["age"] = "18"
-
-	jwtToken := NewWithClaims(method, mapClaims)
-
-	fmt.Println("jwtToken:", *jwtToken)
-
-	str, err := jwtToken.SignedToken(key)
-	if err == nil {
-		fmt.Println("jwt:", str)
-	}
-	fmt.Println("************************************")
-	parts := strings.Split(str, ".")
-	fmt.Println("parts:", parts)
-	claims, err := Base64Decode(parts[1])
-	if err == nil {
-		fmt.Println("calims:", string(claims))
-	}
+	TestJwe()
 }
 
 //验证hmac
@@ -57,14 +33,16 @@ func Verify(MessageHMAC, message string, key interface{}) bool {
 	return hmac.Equal(messageHMAC, exmac)
 }
 func testrsa() {
+	rsa := rsa.EncryptionMethodRSA{}
+
 	publicKey, _ := ioutil.ReadFile("test/publicKey.pem")
 	fmt.Println("publicKey:", string(publicKey))
 	plant := "gaoqinakun"
-	cipher, err := rsaEncrypt([]byte(plant), string(publicKey))
+	cipher, err := rsa.Encrypt([]byte(plant), string(publicKey))
 	fmt.Println("cipher:", string(cipher), err)
 
 	privateKey, _ := ioutil.ReadFile("test/privateKey.pem")
-	clear, err := rsaDecrypt(cipher, string(privateKey))
+	clear, err := rsa.Decrypt(cipher, string(privateKey))
 	fmt.Println("clear:", string(clear), err)
 }
 func TestJwe() {
@@ -72,13 +50,15 @@ func TestJwe() {
 	jwe := Jwe{}
 	//1 生成头部
 	header := NewHeader(ALG_RSA1_5, ENC_A128CBC_HS256)
-	jsonHeader, err := JsonEncode(header)
+	jsonHeader, err := utils.JsonEncode(header)
 	args = append(args, jsonHeader)
 	fmt.Println(jsonHeader, err)
 
 	//2 加密密钥
-	generateKey(1024)
-	key, RasKey := jwe.GetEncryptedKey(header, 16, []byte{})
+	rsa := rsa.EncryptionMethodRSA{}
+	publickey, _ := rsa.GetPublicKey()
+	//	generateKey(1024)
+	key, RasKey := jwe.GetEncryptedKey(header, 16, publickey)
 	args = append(args, string(RasKey))
 	fmt.Println("key:", string(key))
 	fmt.Println("RsaKey:", string(RasKey))
