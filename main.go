@@ -15,12 +15,22 @@ import ( //	"crypto/rand"
 	//	"encoding/base64"
 	//	"strings"
 	//	"log"
+	"jwe/aes"
 	"jwe/rsa"
 	"jwe/utils"
 )
 
 func main() {
-	TestJwe()
+	//	TestJwe()
+	key := "d6lyi130ipb6ztms"
+	plant := "gaoqiankun"
+	aes := aes.EncryptionMethodAES{}
+	cipher, err := aes.Encrypt([]byte(plant), []byte(key))
+	fmt.Println("cipher:", cipher, err)
+
+	original, err := aes.Decrypt(cipher, []byte(key))
+	fmt.Println("original:", string(original), err)
+	testJwe()
 }
 
 //验证hmac
@@ -45,7 +55,7 @@ func testrsa() {
 	clear, err := rsa.Decrypt(cipher, string(privateKey))
 	fmt.Println("clear:", string(clear), err)
 }
-func TestJwe() {
+func testJwe() {
 	args := make([]string, 0)
 	jwe := Jwe{}
 	//1 生成头部
@@ -71,7 +81,7 @@ func TestJwe() {
 
 	fmt.Println("cipher  Iv:", string(cipher), string(Iv))
 	//5 得到数字证书
-	Atag := jwe.GetAuthenticationTag(header, []string{string(RasKey), string(Iv), string(cipher)}, []byte{})
+	Atag := jwe.GetAuthenticationTag(header, []string{string(RasKey), string(Iv), string(cipher)} /*[]byte{}*/, key)
 	fmt.Println("Atag:", string(Atag))
 	args = append(args, string(Atag))
 	//6 得到jwe

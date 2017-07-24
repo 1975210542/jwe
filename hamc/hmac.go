@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"jwe/methodit"
 )
 
 type EncryptionMethodHMAC struct {
@@ -18,8 +19,8 @@ var (
 
 func init() {
 	// RS256
-	EncryptionMethodHMAC256 = &EncryptionMethodHMAC{"A128CBC-HS25"}
-	RegisterSigningMethod(EncryptionMethodHMAC256.GetName(), func() EncryptionMethod {
+	EncryptionMethodHMAC256 = &EncryptionMethodHMAC{"A128CBC-HS256"}
+	methodit.RegisterSigningMethod(EncryptionMethodHMAC256.GetName(), func() methodit.EncryptionMethod {
 		return EncryptionMethodHMAC256
 	})
 

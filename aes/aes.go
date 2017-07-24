@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"crypto/aes"
 	"crypto/cipher"
+	"fmt"
+	"jwe/methodit"
 	"jwe/utils"
-	//	"fmt"
 )
 
 type EncryptionMethodAES struct {
@@ -19,7 +20,7 @@ var (
 func init() {
 	// RS256
 	EncryptionMethodAES256 = &EncryptionMethodAES{"A128CBC-HS256"}
-	RegisterSigningMethod(EncryptionMethodAES256.GetName(), func() EncryptionMethod {
+	methodit.RegisterSigningMethod(EncryptionMethodAES256.GetName(), func() methodit.EncryptionMethod {
 		return EncryptionMethodAES256
 	})
 
@@ -30,7 +31,7 @@ func (e *EncryptionMethodAES) GetName() string {
 }
 
 func (e *EncryptionMethodAES) Encrypt(plantText []byte, key interface{}) ([]byte, error) {
-	//	fmt.Println("AES 加密！！！")
+	fmt.Println("AES 加密！！！")
 	return aesEncrypt(plantText, key)
 }
 
@@ -83,7 +84,7 @@ func aesDecrypt(ciphertext []byte, key interface{}) ([]byte, error) {
 	}
 	blockSize := block.BlockSize()
 
-	blockModel := cipher.NewCBCDecrypter(block, keyBytes[:blockSize])
+	blockModel := cipher.NewCBCDecrypter(block, keyBytes[:blockSize] /*, keyBytes*/)
 	plantText := make([]byte, len(ciphertext))
 	blockModel.CryptBlocks(plantText, ciphertext)
 	plantText = pKCS7UnPadding(plantText, block.BlockSize())
