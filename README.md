@@ -15,11 +15,11 @@ SdiwkIr3ajwQzaBtQD_A.<br />
 XFBoMYUZodetZdvTiFvSkQ`<br />
 * 每段数据都是以Base64UrlEncode编码的数据
 jwe序列化的数据包括5段,内容分别如下:
-`BASE64URL(UTF8(JWE Protected Header)) || '.' ||<br />
-BASE64URL(JWE Encrypted Key) || '.' ||<br />
-BASE64URL(JWE Initialization Vector) || '.' ||<br />
-BASE64URL(JWE Ciphertext) || '.' ||<br />
-BASE64URL(JWE Authentication Tag)`<br />
+`BASE64URL(UTF8(JWE Protected Header)) || '.' || \<br />
+BASE64URL(JWE Encrypted Key) || '.' || \<br />
+BASE64URL(JWE Initialization Vector) || '.' || \<br />
+BASE64URL(JWE Ciphertext) || '.' || \<br />
+BASE64URL(JWE Authentication Tag)` \<br />
 <br/>
 # JWE工作原理
 
@@ -30,12 +30,12 @@ JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
   {"alg":"RSA1_5","enc":"A128CBC-HS256"}
 ```
 ## 密的过程
->   Step1.选择算法，生成JWE Header
-    Step2.生成密钥并加密密钥，得到Encrypted Key
-    Step3.生成向量数据，得到Initialization Vector
-    Step4.加密原始报文，得到Cipher text
-    Step5.生成认证码，得到Authentication Tag
-    Step6.拼接数据，得到JWE Object
+>   Step1.选择算法，生成JWE Header<br/>
+    Step2.生成密钥并加密密钥，得到Encrypted Key<br/>
+    Step3.生成向量数据，得到Initialization Vector<br/>
+    Step4.加密原始报文，得到Cipher text<br/>
+    Step5.生成认证码，得到Authentication Tag<br/>
+    Step6.拼接数据，得到JWE Object<br/>
 # 使用方法
 
 
