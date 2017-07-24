@@ -1,11 +1,4 @@
-# jwe
-jwe介绍<br />
-=======
-    这是我自己写的第三方包<br />
-    `可以直接调用`<br />
---
-* 一级标题<br/>
-* 二级标题<br/>
-```
-go test _v
-```
+JWE
+====
+JWE(Json Web Encryption),可以理解为JSON格式的网络加密,
+
