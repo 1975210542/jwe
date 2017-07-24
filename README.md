@@ -2,7 +2,7 @@ JWE
 ====
 JWE(Json Web Encryption),可以理解为JSON格式的网络加密,有以下几个特点:<br/>
 * 整个数据分为5端，每段都用"."隔开,形如:<br />
-'eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
+`eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.
 OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe
 ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb
 Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV
@@ -12,5 +12,5 @@ mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8
 48V1_ALb6US04U3b.
 5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji
 SdiwkIr3ajwQzaBtQD_A.
-XFBoMYUZodetZdvTiFvSkQ'
+XFBoMYUZodetZdvTiFvSkQ`
 
