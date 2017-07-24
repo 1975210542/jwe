@@ -26,7 +26,7 @@ jwe序列化的数据包括5段,内容分别如下:
 整个JWE数据共有3部分需要进行加密,分别为:密钥的加密,密文的加密和数字认证码的生成,在生成JWE数据之前,我们首先要对这三种算法进行指定。<br />
 JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
 ```
-  {"alg":"RSA1_5","enc":"A128CBC-HS256"}
+    {"alg":"RSA1_5","enc":"A128CBC-HS256"}
 ```
 ## 2.密的过程
 >   Step1.选择算法，生成JWE Header<br/>
@@ -35,6 +35,8 @@ JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
     Step4.加密原始报文，得到Cipher text<br/>
     Step5.生成认证码，得到Authentication Tag<br/>
     Step6.拼接数据，得到JWE Object<br/>
-# 使用方法
+# 怎么使用
+## JWE加密实例
+根据上文的加密过程，我们来具体介绍每一步的使用：
 
 
