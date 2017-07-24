@@ -89,3 +89,5 @@ cipher, Iv := jwe.GetCipherText(header, []byte(plant), key)
  * JWE是一个数据加解密协议(protocol)，是一种流程和数据结构的规范<br/>
  * JWE有着非常强的定制性和可扩展性。<br/>
  开发者可以根据自己的需要，选择适合的算法对数据进行JWE加解密
+ # 未完待续。。。。。
+ 后续还会增加其他的算法。
