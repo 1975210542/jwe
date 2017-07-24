@@ -45,14 +45,13 @@ JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
     header := NewHeader(ALG_RSA1_5, ENC_A128CBC_HS256)
     jsonHeader, err := utils.JsonEncode(header)
     ```
+    <br />
     Step2.生成密钥并加密密钥，得到Encrypted Key<br />
     随机生成一组AES的Key,然后用RSA进行加密<br />
     ```
-         rsa := rsa.EncryptionMethodRSA{}//RSA实例
-         publickey, _ := rsa.GetPublicKey()//得到publicKey
-         key, RasKey := jwe.GetEncryptedKey(header, 16, publickey)//header: Step1.生成的header  size: AES的Key的size key:对密钥进行RSA加密          的          
-         publicKey<br />
-       
-        
+    rsa := rsa.EncryptionMethodRSA{}//RSA实例
+    publickey, _ := rsa.GetPublicKey()//得到publicKey
+    key, RasKey := jwe.GetEncryptedKey(header, 16, publickey)//header: Step1.生成的header  size: AES的Key的size key:对密钥进行RSA加密          的          
+    publicKey<br />   
     ```
 
