@@ -1,25 +1,25 @@
 # JWE介绍
 
 JWE(Json Web Encryption),可以理解为JSON格式的网络加密,有以下几个特点:<br/>
-* 整个数据分为5端，每段都用"."隔开,形如:<br />
+* 整个数据分为5端，每段都用"."隔开,形如:<br/>
 `eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.<br />
-OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe<br />
-ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb<br />
-Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV<br />
-mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8<br />
-1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi<br />
+OKOawDo13gRp2ojaHV7LFpZcgV7T6DVZKTyKOMTYUmKoTCVJRgckCL9kiMT03JGe<br/>
+ipsEdY3mx_etLbbWSrFr05kLzcSr4qKAq7YN7e9jwQRb23nfa6c9d-StnImGyFDb<br/>
+Sv04uVuxIp5Zms1gNxKKK2Da14B8S4rzVRltdYwam_lDp5XnZAYpQdb76FdIKLaV<br/>
+mqgfwX7XWRxv2322i-vDxRfqNzo_tETKzpVLzfiwQyeyPGLBIO56YJ7eObdv0je8<br/>
+1860ppamavo35UgoRdbYaBcoh9QcfylQr66oc6vFWXRcZ_ZT2LawVCWTIy3brGPi<br/>
 6UklfCpIMfIjf7iGdXKHzg.<br />
 48V1_ALb6US04U3b.<br />
-5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji<br />
-SdiwkIr3ajwQzaBtQD_A.<br />
-XFBoMYUZodetZdvTiFvSkQ`<br />
+5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji<br/>
+SdiwkIr3ajwQzaBtQD_A.<br/>
+XFBoMYUZodetZdvTiFvSkQ`<br/>
 * 每段数据都是以Base64UrlEncode编码的数据
 jwe序列化的数据包括5段,内容分别如下:
->   BASE64URL(UTF8(JWE Protected Header)) || '.' || <br />
-    BASE64URL(JWE Encrypted Key) || '.' || <br />
-    BASE64URL(JWE Initialization Vector) || '.' || <br />
-    BASE64URL(JWE Ciphertext) || '.' || <br />
-    BASE64URL(JWE Authentication Tag)` <br />
+>   BASE64URL(UTF8(JWE Protected Header)) || '.' || <br/>
+    BASE64URL(JWE Encrypted Key) || '.' || <br/>
+    BASE64URL(JWE Initialization Vector) || '.' || <br/>
+    BASE64URL(JWE Ciphertext) || '.' || <br/>
+    BASE64URL(JWE Authentication Tag)` <br/>
 # JWE的工作原理
 
 ## 1.加密算法的选择
@@ -78,11 +78,14 @@ cipher, Iv := jwe.GetCipherText(header, []byte(plant), key)
     args:Step2的加密密钥，Step3的向量数据，Step4的密文组成的数组<br/>
     key:进行Hmac加密的Key<br/>
     return:生成的认证码<br/>
-### 拼接以上数据，得到JWE Object
+### Step6.拼接以上数据，得到JWE Object
 >   把以上5个步骤的数据进行Base64UrlEncode，然后按照顺序拼接，用"."分割，得到最后的数据。<br/>
     jw := jwe.GetJWE(args)<br/>
 #### func GetJWE(args []string) string 函数说明
 >   参数
     args:以上5的步骤的数据<br/>
     return：以Base64Base64UrlEncode编码的JWE Object<br/>
- 
+ # JWE的本质
+ * JWE是一个数据加解密协议(protocol)，是一种流程和数据结构的规范<br/>
+ * JWE有着非常强的定制性和可扩展性。<br/>
+ 开发者可以根据自己的需要，选择适合的算法对数据进行JWE加解密
