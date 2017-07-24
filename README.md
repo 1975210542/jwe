@@ -20,6 +20,7 @@ BASE64URL(JWE Encrypted Key) || '.' ||<br />
 BASE64URL(JWE Initialization Vector) || '.' ||<br />
 BASE64URL(JWE Ciphertext) || '.' ||<br />
 BASE64URL(JWE Authentication Tag)`<br />
+<br/>
 JWE工作原理
 ===
 整个JWE数据共有3部分需要进行加密,分别为:密钥的加密,密文的加密和数字认证码的生成,在生成JWE数据之前,我们首先要对这三种算法进行指定。<br />
