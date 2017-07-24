@@ -22,13 +22,13 @@ jwe序列化的数据包括5段,内容分别如下:
     BASE64URL(JWE Authentication Tag)` <br />
 # JWE的工作原理
 
-## 加密算法的选择
+## 1.加密算法的选择
 整个JWE数据共有3部分需要进行加密,分别为:密钥的加密,密文的加密和数字认证码的生成,在生成JWE数据之前,我们首先要对这三种算法进行指定。<br />
 JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
 ```
   {"alg":"RSA1_5","enc":"A128CBC-HS256"}
 ```
-## 密的过程
+## 2.密的过程
 >   Step1.选择算法，生成JWE Header<br/>
     Step2.生成密钥并加密密钥，得到Encrypted Key<br/>
     Step3.生成向量数据，得到Initialization Vector<br/>
