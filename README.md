@@ -51,7 +51,7 @@ JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
       publickey, _ := rsa.GetPublicKey()<br/>
       key, RasKey := jwe.GetEncryptedKey(header, 16, publickey)<br/>             
 #### func GetEncryptedKey(header Header, size int, key interface{}) (aesKey, RsaKey []byte)函数说明
->   参数
+>   参数<br/>
     header: Step1生成的JWE Header<br/>
     size:AES加密的密钥长度<br/>
     key:对密钥进行RSA加密的publicKey<br/>
@@ -64,7 +64,7 @@ JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
 cipher, Iv := jwe.GetCipherText(header, []byte(plant), key)
 ```
 #### func GetCipherText(header Header, plant []byte, key interface{}) (ciphertext, IV []byte)函数说明
->   参数
+>   参数<br/>
     header: Step1生成的JWE Header<br/>
     plant:原始报文<br/>
     key:step2得到的aesKey<br/>
@@ -73,7 +73,7 @@ cipher, Iv := jwe.GetCipherText(header, []byte(plant), key)
 >   用"."的方式将Step2的加密密钥，Step3的向量数据，Step4的密文进行拼接，然后得到认证码<br/>
     Atag := jwe.GetAuthenticationTag(header, []string{string(RasKey), string(Iv), string(cipher)}, key)<br/>
 #### GetAuthenticationTag(header Header, args []string, key interface{}) (Atag []byte)函数说明
->   参数
+>   参数<br/>
     header: Step1生成的JWE Header<br/>
     args:Step2的加密密钥，Step3的向量数据，Step4的密文组成的数组<br/>
     key:进行Hmac加密的Key<br/>
@@ -82,7 +82,7 @@ cipher, Iv := jwe.GetCipherText(header, []byte(plant), key)
 >   把以上5个步骤的数据进行Base64UrlEncode，然后按照顺序拼接，用"."分割，得到最后的数据。<br/>
     jw := jwe.GetJWE(args)<br/>
 #### func GetJWE(args []string) string 函数说明
->   参数
+>   参数<br/>
     args:以上5的步骤的数据<br/>
     return：以Base64Base64UrlEncode编码的JWE Object<br/>
  # JWE的本质
