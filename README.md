@@ -1,5 +1,5 @@
-JWE介绍
-===
+# JWE介绍
+
 JWE(Json Web Encryption),可以理解为JSON格式的网络加密,有以下几个特点:<br/>
 * 整个数据分为5端，每段都用"."隔开,形如:<br />
 `eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkEyNTZHQ00ifQ.<br />
@@ -21,10 +21,20 @@ BASE64URL(JWE Initialization Vector) || '.' ||<br />
 BASE64URL(JWE Ciphertext) || '.' ||<br />
 BASE64URL(JWE Authentication Tag)`<br />
 <br/>
-JWE工作原理
-===
+# JWE工作原理
+
+## 加密算法的选择
 整个JWE数据共有3部分需要进行加密,分别为:密钥的加密,密文的加密和数字认证码的生成,在生成JWE数据之前,我们首先要对这三种算法进行指定。<br />
 JWE是通过JWE Header来进行相应算法的指定说明。其格式如下:
 ```
   {"alg":"RSA1_5","enc":"A128CBC-HS256"}
 ```
+## 密的过程
+>   Step1.选择算法，生成JWE Header
+    Step2.生成密钥并加密密钥，得到Encrypted Key
+    Step3.生成向量数据，得到Initialization Vector
+    Step4.加密原始报文，得到Cipher text
+    Step5.生成认证码，得到Authentication Tag
+    Step6.拼接数据，得到JWE Object
+# 使用方法
+
