@@ -12,7 +12,7 @@ JWE(Json Web Encryption),可以理解为JSON格式的网络加密,有以下几�
     48V1_ALb6US04U3b.<br/>
     5eym8TW_c8SuK0ltJ3rpYIzOeDQz7TALvtu6UG9oMo4vpzs9tX_EFShS8iB7j6ji<br/>
     SdiwkIr3ajwQzaBtQD_A.<br/>
-XFBoMYUZodetZdvTiFvSkQ`<br/>
+    XFBoMYUZodetZdvTiFvSkQ<br/>
 * 每段数据都是以Base64UrlEncode编码的数据
 jwe序列化的数据包括5段,内容分别如下:
 >   BASE64URL(UTF8(JWE Protected Header)) || '.' || <br/>
