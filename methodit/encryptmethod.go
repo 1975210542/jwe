@@ -13,14 +13,15 @@ type EncryptionMethod interface {
 }
 
 func RegisterSigningMethod(alg string, f func() EncryptionMethod) {
-	fmt.Println("注册方法！！！")
+	fmt.Println("注册方法！！！", alg)
 	encryptionMethod[alg] = f
 }
 
 func GetSigningMethod(alg string) (method EncryptionMethod) {
-	fmt.Println("得到方法！！！")
+
 	if methodF, ok := encryptionMethod[alg]; ok {
 		method = methodF()
+		fmt.Println("得到方法！！！")
 	}
 	return
 }

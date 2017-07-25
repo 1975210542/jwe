@@ -1,7 +1,10 @@
 package main
 
 import (
+	_ "jwe/aes"
+	_ "jwe/hma"
 	"jwe/methodit"
+	_ "jwe/rsa"
 	"jwe/utils"
 	"log"
 	"strings"
@@ -44,8 +47,9 @@ func getCipherText(header Header, plant []byte, key interface{}) (ciphertext, IV
 
 	Key := key.([]byte)
 	IV = []byte(Key)
-	alg := header.Enc
-	method := methodit.GetSigningMethod(alg)
+	alg := strings.Split(header.Enc, "-")
+	log.Print("alg:", alg, alg[0])
+	method := methodit.GetSigningMethod(alg[0])
 	ciphertext, err := method.Encrypt(plant, Key)
 	if err != nil {
 		log.Println("加密出错了", err)
@@ -55,9 +59,10 @@ func getCipherText(header Header, plant []byte, key interface{}) (ciphertext, IV
 
 func getAuthenticationTag(header Header, args []string, key interface{}) (Atag []byte) {
 
-	alg := header.Enc
+	alg := strings.Split(header.Enc, "-")
 	tag := strings.Join(args, ".")
-	method := methodit.GetSigningMethod(alg)
+	log.Println("Alg:", alg, alg[1])
+	method := methodit.GetSigningMethod(alg[1])
 	Atag, err := method.Encrypt([]byte(tag), key)
 	if err != nil {
 		log.Println("加密出错了", err)

@@ -2,6 +2,9 @@ package main
 
 import (
 	"fmt"
+	_ "jwe/aes"
+	_ "jwe/hma"
+	_ "jwe/rsa"
 	"testing"
 )
 

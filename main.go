@@ -15,22 +15,16 @@ import ( //	"crypto/rand"
 	//	"encoding/base64"
 	//	"strings"
 	//	"log"
-	"jwe/aes"
+
+	//	"jwe/methodit"
 	"jwe/rsa"
 	"jwe/utils"
 )
 
 func main() {
-	//	TestJwe()
-	key := "d6lyi130ipb6ztms"
-	plant := "gaoqiankun"
-	aes := aes.EncryptionMethodAES{}
-	cipher, err := aes.Encrypt([]byte(plant), []byte(key))
-	fmt.Println("cipher:", cipher, err)
 
-	original, err := aes.Decrypt(cipher, []byte(key))
-	fmt.Println("original:", string(original), err)
 	testJwe()
+
 }
 
 //验证hmac

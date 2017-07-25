@@ -19,7 +19,8 @@ var (
 
 func init() {
 	// RS256
-	EncryptionMethodAES256 = &EncryptionMethodAES{"A128CBC-HS256"}
+	fmt.Println("初始化AES")
+	EncryptionMethodAES256 = &EncryptionMethodAES{"A128CBC"}
 	methodit.RegisterSigningMethod(EncryptionMethodAES256.GetName(), func() methodit.EncryptionMethod {
 		return EncryptionMethodAES256
 	})

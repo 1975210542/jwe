@@ -23,6 +23,7 @@ var (
 
 func init() {
 	// RS256
+	fmt.Println("初始化RSA")
 	EncryptionMethodRSA256 = &EncryptionMethodRSA{"RSA1_5"}
 	methodit.RegisterSigningMethod(EncryptionMethodRSA256.GetName(), func() methodit.EncryptionMethod {
 		return EncryptionMethodRSA256
