@@ -19,7 +19,7 @@ jwe序列化的数据包括5段,内容分别如下:
     BASE64URL(JWE Encrypted Key) || '.' || <br/>
     BASE64URL(JWE Initialization Vector) || '.' || <br/>
     BASE64URL(JWE Ciphertext) || '.' || <br/>
-    BASE64URL(JWE Authentication Tag)` <br/>
+    BASE64URL(JWE Authentication Tag) <br/>
 # JWE的工作原理
 
 ## 1.加密算法的选择
